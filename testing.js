@@ -7,7 +7,7 @@ renderFuncs["testComponent"] = (state) => {
 
 renderFuncs["moviesComponent"] = (state) => {
     return `<div>
-        ${iterateState(state, (movie) => {
+        ${iterateState(state.movies, (movie) => {
                 return`<div>
                     <h1>${movie.title}</h1>
                     <p>${movie.releaseYear}</p>
@@ -21,26 +21,21 @@ renderFuncs["moviesComponent"] = (state) => {
 }
 renderFuncs["counterComponent"] = (state) => {
     addEvent("click", "counter", state, (state) => {
-        state.count += state.increment;
+        state.count += parseInt(document.getElementById("increment").value);
     })
     return `<div>
+        <input id = "increment" placeholder="increment" value="1" type = "number"></input>
         <p>${state.count}</p>
         <button id = "counter">Increment</button>
     </div>
     `;
 }
-states["counterState"] = {
+states["state"] = {
     "count": 0,
-    "increment": 1
-}
-
-states["titleState"] = {
+    "increment": 1,
     "title": "Snippet Working",
-    "text": "This is a working snippet"
-};
-
-states["moviesState"] = [
-    {
+    "text": "This is a working snippet",
+    "movies": [{
         "title": "Star Wars a new Hope",
         "releaseYear": 1977,
         "director": "George Lucas",
@@ -51,5 +46,5 @@ states["moviesState"] = [
         "releaseYear": 1980,
         "director": "Irvin Kershner",
         "rating": "PG"
-    }
-]
+    }]
+}

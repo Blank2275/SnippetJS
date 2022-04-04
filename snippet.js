@@ -48,7 +48,10 @@ function iterateState(state, stateFunc){
 function addEvent(event, id, state, callback){
     var x = () => callback(state)
     setTimeout(() =>{
-        document.getElementById(id).addEventListener(event, x, true);
+        document.getElementById(id).addEventListener(event, (e) => {
+            e.preventDefault();
+            x();
+        }, true);
     }, 60)
 }
 
