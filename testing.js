@@ -21,7 +21,6 @@ renderFuncs["moviesComponent"] = (state) => {
 }
 renderFuncs["counterComponent"] = (state) => {
     addEvent("click", "counter", state, (state) => {
-        console.log(state)
         state.count += state.increment;
     })
     return `<div>
