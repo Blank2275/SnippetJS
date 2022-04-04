@@ -8,26 +8,6 @@ var events = {
 
 }
 var observers = [];
-// class Snippet extends HTMLElement {
-//     constructor() {
-//         super();
-//         this.attachShadow({ mode: 'open' });
-//         this.renderFunc = renderFuncs[this.getAttribute("data-renderFunc")];
-//         var stateString = this.getAttribute("state")
-//         this.state = states[stateString];
-//         this.observer = ObservableSlim.create(this.state, true, (changes) => {
-//             this.render();
-//         });
-//         this.shadowRoot.innerHTML = `
-//             Error
-//         `;
-//         this.render();
-//         watchState(this, this.renderFunc, this.state, stateString);
-//     }
-//     render(){
-//         this.shadowRoot.innerHTML = this.renderFunc(this.state);
-//     }
-// }
 
 
 function getState(name){
@@ -60,7 +40,6 @@ function runCallBack(state){
 }
 
 window.onload = function(){
-    //customElements.define('custom-snippet', Snippet);
     var elements = document.getElementsByClassName("snippet");
     for(let element of elements){
         render(element);
