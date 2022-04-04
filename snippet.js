@@ -7,6 +7,7 @@ var states = {
 var events = {
 
 }
+var ignoreStates = {};
 var observers = [];
 
 
@@ -26,11 +27,11 @@ function iterateState(state, stateFunc){
 }
 
 function addEvent(event, id, state, callback){
-    var x = () => callback(state)
     setTimeout(() =>{
+
         document.getElementById(id).addEventListener(event, (e) => {
             e.preventDefault();
-            x();
+            callback(state);
         }, true);
     }, 60)
 }
@@ -50,10 +51,21 @@ function render(element){
     var renderFunc = element.dataset.renderfunc;
     var stateString = element.dataset.state;
     var state = states[stateString];
+    var statesToIgnore = ignoreStates[renderFunc];
     renderFunc = renderFuncs[renderFunc];
 
     states[stateString] = ObservableSlim.create(state, true, (changes) => {
-        element.innerHTML = renderFunc(state)
+        var doUpdate = true;
+        for(let change of changes){
+            var jsonPointer = change.jsonPointer;
+            console.log(jsonPointer);
+            if(statesToIgnore && statesToIgnore.indexOf(jsonPointer) !== -1){
+                doUpdate = false;
+            }
+        }
+        if(doUpdate){
+            element.innerHTML = renderFunc(state);
+        }
     });
     state = states[stateString];
 

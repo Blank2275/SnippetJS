@@ -21,16 +21,30 @@ renderFuncs["moviesComponent"] = (state) => {
 }
 renderFuncs["counterComponent"] = (state) => {
     addEvent("click", "counter", state, (state) => {
-        console.log("click")
         state.count += parseInt(document.getElementById("increment").value);
+    });
+    addEvent("click", "clear", state, (state) => {
+        state.count = 0;
+        state.nums = [];
     })
     return `<div>
         <input id = "increment" placeholder="increment" value="1" type = "number"></input>
         <p>${state.count}</p>
+        ${(() => {
+            if(state.nums.length === 0){
+                return `<p class = "green">No numbers</p>`;
+            } else if(state.nums[state.nums.length - 1] >= 50){
+                return `<p class = "green">Greater Than 50</p>`;
+            } else {
+                return `<p class = "red">Less Than 50</p>`;
+            }
+        })()}
         <button id = "counter">Increment</button>
+        <button id = "clear">Clear</button>
     </div>
     `;
 }
+ignoreStates["counterComponent"] = ["/nums/length"];
 renderFuncs["randomComponent"] = (state) => {
     while(state.nums.length < state.count) {
         state.nums.push(Math.floor(Math.random() * 100));
