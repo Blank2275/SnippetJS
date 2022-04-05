@@ -28,12 +28,13 @@ function iterateState(state, stateFunc){
 
 function addEvent(event, id, state, callback){
     setTimeout(() =>{
-
-        document.getElementById(id).addEventListener(event, (e) => {
-            e.preventDefault();
-            callback(state);
-        }, true);
-    }, 60)
+        if(document.getElementById(id) !== null){
+            document.getElementById(id).addEventListener(event, (e) => {
+                e.preventDefault();
+                callback(state);
+            }, true);
+        }
+    }, 60);
 }
 
 function runCallBack(state){
@@ -47,9 +48,17 @@ window.onload = function(){
     }
 }
 
-function render(element){
-    var renderFunc = element.dataset.renderfunc;
-    var stateString = element.dataset.state;
+function renderDirect(element, renderFunc, state){
+    if(!element){
+        element = document.createElement("div");
+    }
+    document.body.appendChild(element);
+    render(element, renderFunc, state)
+}
+
+function render(element, renderFunc, state){
+    var renderFunc = element.dataset.renderfunc || renderFunc;
+    var stateString = element.dataset.state || state;
     var state = states[stateString];
     var statesToIgnore = ignoreStates[renderFunc];
     renderFunc = renderFuncs[renderFunc];

@@ -1,11 +1,15 @@
-renderFuncs["testComponent"] = (state) => {
+renderFuncs={"testComponent": (state) => {
     return `<div>
         <h1>${state.title}</h1>
         <p>${state.text}</p>
         </div>`;
-}
+},
 
-renderFuncs["moviesComponent"] = (state) => {
+"moviesComponent": (state) => {
+    addEvent("click", "popupButton", state, (state) => {
+        state.popupOpen = true;
+        renderDirect(document.getElementById("popup-container"), "popupComponent", "state");
+    });
     return `<div>
         ${iterateState(state.movies, (movie) => {
                 return`<div>
@@ -16,10 +20,27 @@ renderFuncs["moviesComponent"] = (state) => {
                 </div>`;
             })
     }
+    <button id = "popupButton">popup</button>
     </div>
     `;
-}
-renderFuncs["counterComponent"] = (state) => {
+},
+"popupComponent": (state) => {
+    addEvent("click", "popupClose", state, (state) => {
+        state.popupOpen = false;
+    });
+    if(state.popupOpen){
+        return `
+        <div id = "popup">
+            <h1>Popup</h1>
+            <p>some text</p>
+            <button id = "popupClose">Close</button>
+        </div>
+        `;
+    } else {
+        return ``;
+    }
+},
+"counterComponent": (state) => {
     addEvent("click", "counter", state, (state) => {
         state.count += parseInt(document.getElementById("increment").value);
     });
@@ -43,9 +64,8 @@ renderFuncs["counterComponent"] = (state) => {
         <button id = "clear">Clear</button>
     </div>
     `;
-}
-ignoreState("counterComponent", `/nums`);
-renderFuncs["randomComponent"] = (state) => {
+},
+"randomComponent": (state) => {
     while(state.nums.length < state.count) {
         state.nums.push(Math.floor(Math.random() * 100));
     }
@@ -57,13 +77,15 @@ renderFuncs["randomComponent"] = (state) => {
         )}
     </div>`;
 }
-
+}
+ignoreState("counterComponent", `/nums`);
 states["state"] = {
     "count": 0,
     "increment": 1,
     "nums": [],
     "title": "Snippet Working",
     "text": "This is a working snippet",
+    "popupOpen": false,
     "movies": [{
         "title": "Star Wars a new Hope",
         "releaseYear": 1977,
