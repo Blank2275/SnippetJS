@@ -33,7 +33,8 @@ renderFuncs = {
         }
     }
 }
-ignoreState("contactListComponent", `/selectedContact`);
+allowUpdateState("contactListComponent", [`/contacts`]);
+allowUpdateState("contactComponent", [`/contacts`, `/selectedContact`]);
 
 states["state"] = {
     "selectedContact": -1,

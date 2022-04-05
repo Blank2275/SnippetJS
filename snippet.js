@@ -7,7 +7,7 @@ var states = {
 var events = {
 
 }
-var ignoreStates = {};
+var allowUpdateStates = {};
 var observers = [];
 
 
@@ -72,21 +72,25 @@ function render(element, renderFunc, state){
     var renderFunc = element.dataset.renderfunc || renderFunc;
     var stateString = element.dataset.state || state;
     var state = states[stateString];
-    var statesToIgnore = ignoreStates[renderFunc];
+    var statesToListen = allowUpdateStates[renderFunc];
     renderFunc = renderFuncs[renderFunc];
 
     states[stateString] = ObservableSlim.create(state, true, (changes) => {
-        var doUpdate = true;
+        var doUpdate = false;
+        if(!statesToListen){
+            doUpdate = true;
+        }
         for(let change of changes){
             var jsonPointer = change.jsonPointer;
-            console.log(jsonPointer);
-            //statesToIgnore.indexOf(jsonPointer) !== -1
-            if(statesToIgnore && includes(jsonPointer, statesToIgnore)){
-                doUpdate = false;
+            // //statesToIgnore.indexOf(jsonPointer) !== -1
+            // if(statesToIgnore && includes(jsonPointer, statesToIgnore)){
+            //     doUpdate = false;
+            // }
+            if(statesToListen && includes(jsonPointer, statesToListen)){
+                doUpdate = true;
             }
         }
         if(doUpdate){
-            console.log("updating");
             element.innerHTML = renderFunc(state);
         }
     });
@@ -95,19 +99,22 @@ function render(element, renderFunc, state){
     element.innerHTML = renderFunc(state);
 }
 
-function ignoreState(component, jsonPointer){
-    if(!ignoreStates[component]){
-        ignoreStates[component] = [];
+// function ignoreState(component, jsonPointer){
+//     if(!ignoreStates[component]){
+//         ignoreStates[component] = [];
+//     }
+//     ignoreStates[component].push(jsonPointer);
+// }
+function allowUpdateState(component, jsonPointers){
+    if(!allowUpdateStates[component]){
+        allowUpdateStates[component] = [];
     }
-    ignoreStates[component].push(jsonPointer);
+    allowUpdateStates[component].push(...jsonPointers);
 }
 
 function includes(jsonPointer, statesToIgnore){
-    console.log(jsonPointer);
-    console.log(statesToIgnore);
     for(let state of statesToIgnore){
         if(jsonPointer.indexOf(state) !== -1){
-            console.log("false")
             return true;
         }
     }

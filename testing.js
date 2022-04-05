@@ -78,7 +78,7 @@ renderFuncs={"testComponent": (state) => {
     </div>`;
 }
 }
-ignoreState("counterComponent", `/nums`);
+allowUpdateState("counterComponent", ["count"]);
 states["state"] = {
     "count": 0,
     "increment": 1,
