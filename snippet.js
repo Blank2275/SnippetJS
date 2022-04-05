@@ -37,6 +37,18 @@ function addEvent(event, id, state, callback){
     }, 60);
 }
 
+function addClassEvent(event, className, state, callback) {
+    setTimeout(() => {
+        var elements = document.getElementsByClassName(className);
+        for (let element of elements) {
+            element.addEventListener(event, (e) => {
+                e.preventDefault();
+                callback(state, element);
+            }, true);
+        }
+    }, 60);
+}
+
 function runCallBack(state){
     callback(state)
 }
