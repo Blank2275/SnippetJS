@@ -5,8 +5,8 @@ renderFuncs = {
             state.selectedContact = contactId;
         });
         return `<div>
-            ${iterateState(state.contacts, (contact) => {
-            return `<div class = "contact-summary" data-contact-id="${contact.id}">
+            ${iterateState(state.contacts, (contact, id) => {
+            return `<div class = "contact-summary" data-contact-id="${id + 1}">
                         <h1 class = "contact-summary-name">${contact.name}</h1>
                         <img class = "icon" src = "${contact.image}">
                     </div>`;
@@ -16,7 +16,7 @@ renderFuncs = {
     },
     "contactComponent": (state) => {
         var contact = state.contacts[parseInt(state.selectedContact) - 1];
-        
+
         if (state.selectedContact != "-1") {
             return `
                 <div class = "contact-details">
@@ -31,13 +31,16 @@ renderFuncs = {
         } else {
             return ``;
         }
+    },
+    "tabBarComponent": (state) => {
+        return `
+        `
     }
 }
-allowUpdateState("contactListComponent", [`/contacts`]);
-allowUpdateState("contactComponent", [`/contacts`, `/selectedContact`]);
 
 states["state"] = {
     "selectedContact": -1,
+    "tabs": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     "contacts": [
         {
             "name": "John Doe",
@@ -64,4 +67,13 @@ states["state"] = {
             "id": "3"
         }
     ]
+}
+function init() {
+    addEvent("click", "removeContact", states["state"], (state) => {
+        var contactId = state.selectedContact;
+        if (contactId != "-1") {
+            state.contacts.splice(parseInt(contactId) - 1, 1);
+            state.selectedContact = -1;
+        }
+    });
 }

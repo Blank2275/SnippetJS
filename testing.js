@@ -60,7 +60,7 @@ renderFuncs={"testComponent": (state) => {
                 return `<p class = "red">Less Than 50</p>`;
             }
         })()}
-        <button id = "counter">Increment</button>
+        
         <button id = "clear">Clear</button>
     </div>
     `;

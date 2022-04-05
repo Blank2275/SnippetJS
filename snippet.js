@@ -1,5 +1,5 @@
 var renderFuncs = {
-    
+
 }
 var states = {
 
@@ -11,24 +11,26 @@ var allowUpdateStates = {};
 var observers = [];
 
 
-function getState(name){
+function getState(name) {
     return states[name];
 }
-function updateState(state, func){
+function updateState(state, func) {
     func(state);
 }
 
-function iterateState(state, stateFunc){
+function iterateState(state, stateFunc) {
     var gen = "";
-    for(let item of state){
-        gen += stateFunc(item);
+    var index = 0;
+    for (let item of state) {
+        gen += stateFunc(item, index);
+        index++;
     }
     return gen;
 }
 
-function addEvent(event, id, state, callback){
-    setTimeout(() =>{
-        if(document.getElementById(id) !== null){
+function addEvent(event, id, state, callback) {
+    setTimeout(() => {
+        if (document.getElementById(id) !== null) {
             document.getElementById(id).addEventListener(event, (e) => {
                 e.preventDefault();
                 callback(state);
@@ -49,26 +51,30 @@ function addClassEvent(event, className, state, callback) {
     }, 60);
 }
 
-function runCallBack(state){
+function runCallBack(state) {
     callback(state)
 }
 
-window.onload = function(){
+window.onload = function () {
     var elements = document.getElementsByClassName("snippet");
-    for(let element of elements){
+    for (let element of elements) {
         render(element);
+    }
+    //run init function
+    if (init) {
+        init();
     }
 }
 
-function renderDirect(element, renderFunc, state){
-    if(!element){
+function renderDirect(element, renderFunc, state) {
+    if (!element) {
         element = document.createElement("div");
     }
     document.body.appendChild(element);
     render(element, renderFunc, state)
 }
 
-function render(element, renderFunc, state){
+function render(element, renderFunc, state) {
     var renderFunc = element.dataset.renderfunc || renderFunc;
     var stateString = element.dataset.state || state;
     var state = states[stateString];
@@ -77,21 +83,24 @@ function render(element, renderFunc, state){
 
     states[stateString] = ObservableSlim.create(state, true, (changes) => {
         var doUpdate = false;
-        if(!statesToListen){
+        if (!statesToListen) {
             doUpdate = true;
         }
-        for(let change of changes){
+        for (let change of changes) {
             var jsonPointer = change.jsonPointer;
             // //statesToIgnore.indexOf(jsonPointer) !== -1
             // if(statesToIgnore && includes(jsonPointer, statesToIgnore)){
             //     doUpdate = false;
             // }
-            if(statesToListen && includes(jsonPointer, statesToListen)){
+            if (statesToListen && includes(jsonPointer, statesToListen)) {
                 doUpdate = true;
             }
         }
-        if(doUpdate){
-            element.innerHTML = renderFunc(state);
+        if (doUpdate) {
+            setTimeout(() => {
+                element.innerHTML = renderFunc(state);
+            }, 30)
+
         }
     });
     state = states[stateString];
@@ -105,16 +114,16 @@ function render(element, renderFunc, state){
 //     }
 //     ignoreStates[component].push(jsonPointer);
 // }
-function allowUpdateState(component, jsonPointers){
-    if(!allowUpdateStates[component]){
+function allowUpdateState(component, jsonPointers) {
+    if (!allowUpdateStates[component]) {
         allowUpdateStates[component] = [];
     }
     allowUpdateStates[component].push(...jsonPointers);
 }
 
-function includes(jsonPointer, statesToIgnore){
-    for(let state of statesToIgnore){
-        if(jsonPointer.indexOf(state) !== -1){
+function includes(jsonPointer, statesToIgnore) {
+    for (let state of statesToIgnore) {
+        if (jsonPointer.indexOf(state) !== -1) {
             return true;
         }
     }
