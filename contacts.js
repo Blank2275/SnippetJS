@@ -6,17 +6,17 @@ renderFuncs = {
         });
         return `<div>
             ${iterateState(state.contacts, (contact) => {
-                    return `<div class = "contact-summary" data-contact-id="${contact.id}">
+            return `<div class = "contact-summary" data-contact-id="${contact.id}">
                         <h1 class = "contact-summary-name">${contact.name}</h1>
                         <img class = "icon" src = "${contact.image}">
                     </div>`;
-                }) 
+        })
             }
         </div>`;
     },
     "contactComponent": (state) => {
         var contact = state.contacts[parseInt(state.selectedContact) - 1];
-        if(state.selectedContact != "-1"){
+        if (state.selectedContact != "-1") {
             return `
                 <div class = "contact-details">
                     <img class = "contact-image-big" src = "${contact.image}">
@@ -34,11 +34,11 @@ renderFuncs = {
 }
 
 states["state"] = {
-    "selectedContact":-1,
+    "selectedContact": -1,
     "contacts": [
         {
             "name": "John Doe",
-            "image": "https://www.w3schools.com/howto/img_avatar.png",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZeMhHXHoO8OZoHEcFppXKFCa9G7I8Q4VtTg&usqp=CAU",
             "email": "jdoe1234@gmail.com",
             "phone": "123-456-7890",
             "address": "123 Main St, Anytown, CA 12345",
@@ -46,7 +46,7 @@ states["state"] = {
         },
         {
             "name": "Jane Doe",
-            "image": "https://www.w3schools.com/howto/img_avatar.png",
+            "image": "https://cdn.osxdaily.com/wp-content/uploads/2013/07/contacts-icon.jpg",
             "email": "janey567@icloud.com",
             "phone": "123-456-7891",
             "address": "143 Fake St, Anytown, CO 11425",
@@ -54,7 +54,7 @@ states["state"] = {
         },
         {
             "name": "John Smith",
-            "image": "https://www.w3schools.com/howto/img_avatar.png",
+            "image": "https://www1.nyc.gov/assets/nycha/images/content/pages/contact-in-person.png",
             "email": "jsmithlol@gmail.com",
             "phone": "123-456-7892",
             "address": "123 Fake St, Anytown, CO 11425",
