@@ -16,6 +16,7 @@ renderFuncs = {
     },
     "contactComponent": (state) => {
         var contact = state.contacts[parseInt(state.selectedContact) - 1];
+        
         if (state.selectedContact != "-1") {
             return `
                 <div class = "contact-details">
@@ -32,6 +33,7 @@ renderFuncs = {
         }
     }
 }
+ignoreState("contactListComponent", `/selectedContact`);
 
 states["state"] = {
     "selectedContact": -1,

@@ -81,11 +81,12 @@ function render(element, renderFunc, state){
             var jsonPointer = change.jsonPointer;
             console.log(jsonPointer);
             //statesToIgnore.indexOf(jsonPointer) !== -1
-            if(statesToIgnore && doesNotInclude(jsonPointer, statesToIgnore)){
+            if(statesToIgnore && includes(jsonPointer, statesToIgnore)){
                 doUpdate = false;
             }
         }
         if(doUpdate){
+            console.log("updating");
             element.innerHTML = renderFunc(state);
         }
     });
@@ -101,11 +102,14 @@ function ignoreState(component, jsonPointer){
     ignoreStates[component].push(jsonPointer);
 }
 
-function doesNotInclude(jsonPointer, statesToIgnore){
+function includes(jsonPointer, statesToIgnore){
+    console.log(jsonPointer);
+    console.log(statesToIgnore);
     for(let state of statesToIgnore){
         if(jsonPointer.indexOf(state) !== -1){
-            return false;
+            console.log("false")
+            return true;
         }
     }
-    return true;
+    return false;
 }
