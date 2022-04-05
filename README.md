@@ -5,6 +5,9 @@ but inser them into a webpage built with normal HTML.
 
 To get started, you need to download <a href = "https://github.com/ElliotNB/observable-slim">Observable-Slim</a> download the observalse slim min.js file
 and put a link to the downloaded file in the head of your HTML.
+```html
+<script src="observable-slim.min.js"></script>
+```
 
 In the body, below the HTML Content and these script tags have to be in this order or else it will not work
 ```html
