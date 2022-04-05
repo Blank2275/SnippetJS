@@ -23,24 +23,32 @@ in your html document, where you want your component to be inseted add a div lik
  in your javascript file which you linked above, add this code to make a renderFunction for a hello world example
  
  ```js
- renderFuncs = {
-  "testComponent": (state) => {
-    return `
-      <h1>${state.title}</h1>
-      <h2>${state.subTitle}</h2>
-    `
-  }
- }
+renderFuncs = {
+    "testComponent": (state) => {
+        addEvent('click', 'toggle', state, (state) => {
+            state.toggle = !state.toggle;
+            state.title = state.toggle ? 'Hello World!' : 'Hello Snippets';
+        });
+        return `
+        <h1>${state.title}</h1>
+        <h2>${state.subTitle}</h2>
+        <button id = "toggle">Toggle</button>
+    `;
+    },
+};
  ```
  this defines the function called to render our testComponent, the string returned will be the innerHTML of the parent div with the class of snippet,
  the name has to be the same as what was passed in the data-renderFunc
  
+ the addEvent function is used addEvent(eventName, id, state, callback(state))
+ 
  below this (or above, it doesn't really matter) add this code to define the state
  ```js
- states["state"] = {
-    "title": "Hello Snippets",
-    "subTitle": "Your First Snippet"
- }
+states['state'] = {
+    title: 'Hello World!',
+    subTitle: 'Your First Snippet',
+    toggle: true,
+};
  ```
  this is the state of our application, whenever it changes, the application is re-rendered. The whole application will re render for any property of it
  changing, you can select which values update which component with the allowUpdateState function which will be talked about more later in this doc.
