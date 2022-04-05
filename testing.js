@@ -44,7 +44,7 @@ renderFuncs["counterComponent"] = (state) => {
     </div>
     `;
 }
-ignoreStates["counterComponent"] = ["/nums/length"];
+ignoreState("counterComponent", `/nums`);
 renderFuncs["randomComponent"] = (state) => {
     while(state.nums.length < state.count) {
         state.nums.push(Math.floor(Math.random() * 100));
