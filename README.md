@@ -129,4 +129,5 @@ return loadFile(filepath, state);
 ```
 
 everything else should be the same. <br>
-_note: addEvent should not be done in a .snip file, instead put it in the plain render function_
+
+you can now add javascript to .snip files in a dedicated section if you want. You can add !divide! to your snip. Anything above is javascript and anything below is HTML Template like before. This is optional, if you don't have !divide!, it will all be treated like HTML. If you prefer your javascript on the bottom, use !divideDown! instead
