@@ -62,7 +62,7 @@ window.onload = function () {
         render(element);
     }
     //run init function
-    if (init) {
+    if (typeof init === "function") {
         init();
     }
 }
