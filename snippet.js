@@ -130,6 +130,9 @@ function includes(jsonPointer, statesToIgnore) {
     }
     return false;
 }
+function runFunc(state, callback) {
+    callback(state);
+}
 
 function loadFile(path, state) {
     var xhr = new XMLHttpRequest();
@@ -143,6 +146,30 @@ function loadFile(path, state) {
 }
 
 function processRawText(text, state) {
-    text = "`" + text + "`";
-    return eval(text);
+    if (text.indexOf("!divide!") == -1 && text.indexOf("!divideDown") == -1) {
+        text = "`" + text + "`";
+        return eval(text);
+    } else {
+        //separate the html and the pure javascript
+        if (text.indexOf("!divide!") != -1) {
+            //javascript on top
+            var sections = text.split("!divide!");
+            var js = sections[0];
+            var html = sections[1];
+            eval(js);
+            html = "`" + html + "`";
+            return eval(html);
+
+        } else if (text.indexOf("!divideDown!") != -1) {
+            //javascript on bottom
+            var sections = text.split("!divide!");
+            var js = sections[1];
+            var html = sections[0];
+            eval(js)
+            html = "`" + html + "`";
+            return eval(html);
+        } else {
+            return "<h1 style = 'color:red'>Error: Invalid Snippet Format</h1>"
+        }
+    }
 }

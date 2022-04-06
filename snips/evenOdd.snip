@@ -1,0 +1,14 @@
+var even = state.count % 2 === 0;
+var cls = even ? "green" : "red";
+var txt = even ? "Even" : "Odd";
+addEvent("click", "alertMe", state, (state) => {
+    alert("Alert lol")
+});
+!divide!
+<div>
+    <p>${state.count}</p>
+    <div style = "width:100px;height100px;border-radius:50px;" class=${cls} >
+        ${txt}
+        <button id = "alertMe">Alert</button>
+    </div>
+</div>
