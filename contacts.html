@@ -69,8 +69,34 @@
             position:relative;
             width:60%;
             border-radius: 1000px;
-
         }
+        .new-contact-area{
+            grid-row:2/5;
+            grid-column:3/5;
+            background-color: rgb(189, 188, 204);
+            color:rgb(0, 0, 0);
+            padding-right:16px;
+            padding-left:12px;
+        }
+        /*style class new-contact-input width 100% height 17%*/
+        .new-contact-input{
+            width:100%;
+            height:15%;
+            border-radius:10px;
+            border:1px solid black;
+            font-size:160%;
+        }
+        .new-contact-submit{
+            width:100%;
+            height:15%;
+            border-radius:10px;
+            border:1px solid black;
+            font-size:160%;
+        }
+        .height100{
+            height:100%;
+        }
+
     </style>
     <div class = "body">
         <div class = "header">
@@ -79,6 +105,9 @@
         </div>
         <div class = "snippet contactListContainer" data-renderFunc="contactListComponent" data-state="state"></div>
         <div class = "snippet contactInfoContainer" data-renderFunc="contactComponent" data-state="state"></div>
+        <div class = "new-contact-area">
+            <div class = "snippet height100" data-renderFunc="newContactComponent" data-state="state"></div>
+        </div>
     </div>
     <script src="snippet.js"></script>
     <script src="contacts.js"></script>

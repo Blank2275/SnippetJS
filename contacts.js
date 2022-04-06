@@ -35,6 +35,24 @@ renderFuncs = {
     "tabBarComponent": (state) => {
         return `
         `
+    },
+    "newContactComponent": (state) => {
+        addEvent("click", "add-contact", state, (state) => {
+            let contact = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                email: document.getElementById("email").value,
+                address: document.getElementById("address").value,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZeMhHXHoO8OZoHEcFppXKFCa9G7I8Q4VtTg&usqp=CAU",
+                id: state.contacts.length.toString()
+            }
+            state.contacts.push(contact);
+            document.getElementById("name").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("address").value = "";
+        });
+        return loadFile("snips/newContactComponent.snip", state);
     }
 }
 

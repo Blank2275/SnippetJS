@@ -129,3 +129,19 @@ function includes(jsonPointer, statesToIgnore) {
     }
     return false;
 }
+
+function loadFile(path, state) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', path, false);
+    xhr.send();
+    if (xhr.status === 200) {
+        return processRawText(xhr.responseText, state);
+    } else {
+        return null;
+    }
+}
+
+function processRawText(text, state) {
+    text = "`" + text + "`";
+    return eval(text);
+}
