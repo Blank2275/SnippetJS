@@ -56,6 +56,8 @@ renderFuncs = {
     }
 }
 
+allowUpdateState("newContactComponent", []);
+
 states["state"] = {
     "selectedContact": -1,
     "tabs": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
