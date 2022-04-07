@@ -40,6 +40,28 @@ function addEvent(event, id, state, props, callback) {
     }, 60);
 }
 
+function bindState(id, state, props, callback) {
+    setTimeout(() => {
+        var element = document.getElementById(id);
+        element.oninput = (e) => {
+            e.preventDefault();
+            callback(state, props, element);
+        }
+    }, 60);
+}
+
+function bindClassState(class, state, props, callback) {
+    setTimeout(() => {
+        var elements = document.getElementsByClassName(class);
+        for (let element of elements) {
+            element.oninput = (e) => {
+                e.preventDefault();
+                callback(state, props, element);
+            }
+        }
+    }, 60);
+}
+
 function addClassEvent(event, className, state, callback) {
     setTimeout(() => {
         var elements = document.getElementsByClassName(className);
@@ -140,7 +162,6 @@ function loadFile(path, state, props) {
     xhr.open('GET', path, false);
     xhr.send();
     if (xhr.status === 200) {
-        console.log(xhr.responseText);
         return processRawText(xhr.responseText, state, props);
     } else {
         return null;
