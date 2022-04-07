@@ -1,6 +1,6 @@
 renderFuncs = {
-    "contactListComponent": (state) => {
-        addClassEvent("click", "contact-summary", state, (state, element) => {
+    "contactListComponent": (state, props) => {
+        addClassEvent("click", "contact-summary", state, {}, (state, props, element) => {
             var contactId = element.getAttribute("data-contact-id");
             state.selectedContact = contactId;
         });
@@ -37,7 +37,7 @@ renderFuncs = {
         `
     },
     "newContactComponent": (state) => {
-        addEvent("click", "add-contact", state, (state) => {
+        addEvent("click", "add-contact", state, {}, (state) => {
             let contact = {
                 name: document.getElementById("name").value,
                 phone: document.getElementById("phone").value,

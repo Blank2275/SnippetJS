@@ -28,25 +28,27 @@ function iterateState(state, stateFunc) {
     return gen;
 }
 
-function addEvent(event, id, state, callback) {
+function addEvent(event, id, state, props, callback) {
     setTimeout(() => {
         if (document.getElementById(id) !== null) {
             var element = document.getElementById(id);
             document.getElementById(id).addEventListener(event, (e) => {
                 e.preventDefault();
-                callback(state, element);
+                alert(props)
+                callback(state, props, element);
             }, true);
         }
     }, 60);
 }
 
-function addClassEvent(event, className, state, callback) {
+function addClassEvent(event, className, state, props, callback) {
     setTimeout(() => {
         var elements = document.getElementsByClassName(className);
         for (let element of elements) {
             element.addEventListener(event, (e) => {
                 e.preventDefault();
-                callback(state, element);
+                alert(callback)
+                callback(state, props, element);
             }, true);
         }
     }, 60);
@@ -75,11 +77,12 @@ function renderDirect(element, renderFunc, state) {
     render(element, renderFunc, state)
 }
 
-function render(element, renderFunc, state) {
+function render(element, renderFunc, state, props) {
     var renderFunc = element.dataset.renderfunc || renderFunc;
     var stateString = element.dataset.state || state;
     var state = states[stateString];
     var statesToListen = allowUpdateStates[renderFunc];
+    props = props || {};
     renderFunc = renderFuncs[renderFunc];
 
     states[stateString] = ObservableSlim.create(state, true, (changes) => {
@@ -99,14 +102,14 @@ function render(element, renderFunc, state) {
         }
         if (doUpdate) {
             setTimeout(() => {
-                element.innerHTML = renderFunc(state);
+                element.innerHTML = renderFunc(state, props);
             }, 30)
 
         }
     });
     state = states[stateString];
 
-    element.innerHTML = renderFunc(state);
+    element.innerHTML = renderFunc(state, props);
 }
 
 // function ignoreState(component, jsonPointer){
@@ -134,18 +137,19 @@ function runFunc(state, callback) {
     callback(state);
 }
 
-function loadFile(path, state) {
+function loadFile(path, state, props) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', path, false);
     xhr.send();
     if (xhr.status === 200) {
-        return processRawText(xhr.responseText, state);
+        console.log(xhr.responseText);
+        return processRawText(xhr.responseText, state, props);
     } else {
         return null;
     }
 }
 
-function processRawText(text, state) {
+function processRawText(text, state, props) {
     if (text.indexOf("!divide!") == -1 && text.indexOf("!divideDown") == -1) {
         text = "`" + text + "`";
         return eval(text);
