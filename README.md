@@ -111,23 +111,30 @@ The last thing you need for it to work is to provide some contacts in the state 
 There is a init function which you can define globally in your js file if you want, it is not required. If it is defined, it will be called after the application is rendered. You can call the
 
 ```js
-addEvent(event, id, state, callback(state, element));
+addEvent(event, id, state, props, callback(state, props, element));
 ```
 
+_note: props can be any json object but it must be an object or it will not work_
+props are used to pass information down to child elements that are not state. For example, if you want to inform an element of a list from iterateState which index it is so it can pull the correct information from the state.
 or
 
 ```js
-addClassEvent(event, class, state, callback(state, element));
+addClassEvent(event, class, state, props, callback(state, props, element));
 ```
 
-functions. The addClassEvent function will add the listener to an entire class and you can use data-attributes to tell which specific element was clicked. One of the callback arguments in both of the above functions.
+functions. The addClassEvent function will add the listener to an entire class
 
 you can create a .snip file where you can put the return value of a renderFunc and
 
 ```js
-return loadFile(filepath, state);
+return loadFile(filepath, state, props);
 ```
 
 everything else should be the same. <br>
 
 you can now add javascript to .snip files in a dedicated section if you want. You can add !divide! to your snip. Anything above is javascript and anything below is HTML Template like before. This is optional, if you don't have !divide!, it will all be treated like HTML. If you prefer your javascript on the bottom, use !divideDown! instead
+
+_note: data-attributes are no longer the best way to add events to dynamically generated lists of elements._
+_note:The # operator only works in .snip files, they are the best way to make snips anyway_
+instead, use the # operator (hash operator). when assigning an id to an element, put a # in front of whatever id you chose. Inside of that same .snip file, it has to be the same file, you can use the addEvent function and put that same id with the hash and it will only detect events for that one html element in that specific snip even if you create several of that same type of snip.
+behind the scenes, it replaces the # with a random 10 digit string so it should be unique every time.
