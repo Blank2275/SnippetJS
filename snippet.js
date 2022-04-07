@@ -34,21 +34,19 @@ function addEvent(event, id, state, props, callback) {
             var element = document.getElementById(id);
             document.getElementById(id).addEventListener(event, (e) => {
                 e.preventDefault();
-                alert(props)
                 callback(state, props, element);
             }, true);
         }
     }, 60);
 }
 
-function addClassEvent(event, className, state, props, callback) {
+function addClassEvent(event, className, state, callback) {
     setTimeout(() => {
         var elements = document.getElementsByClassName(className);
         for (let element of elements) {
             element.addEventListener(event, (e) => {
                 e.preventDefault();
-                alert(callback)
-                callback(state, props, element);
+                callback(state, element);
             }, true);
         }
     }, 60);
@@ -150,6 +148,8 @@ function loadFile(path, state, props) {
 }
 
 function processRawText(text, state, props) {
+    var hashValue = generateRandomString(10);
+    text = replaceHash(text, hashValue);
     if (text.indexOf("!divide!") == -1 && text.indexOf("!divideDown") == -1) {
         text = "`" + text + "`";
         return eval(text);
@@ -176,4 +176,25 @@ function processRawText(text, state, props) {
             return "<h1 style = 'color:red'>Error: Invalid Snippet Format</h1>"
         }
     }
+}
+
+function replaceHash(text, hashValue) {
+    //replace all # with hashValue where the previous char is "
+    var index = text.indexOf("#");
+    while (index != -1) {
+        var prevChar = text[index - 1];
+        if (prevChar == "\"") {
+            text = text.substring(0, index) + hashValue + text.substring(index + 1);
+        }
+        index = text.indexOf("#", index);
+    }
+    return text;
+}
+
+function generateRandomString(num) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < num; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
 }
