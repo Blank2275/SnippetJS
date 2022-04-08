@@ -50,9 +50,9 @@ function bindState(id, state, props, callback) {
     }, 60);
 }
 
-function bindClassState(class, state, props, callback) {
+function bindClassState(className, state, props, callback) {
     setTimeout(() => {
-        var elements = document.getElementsByClassName(class);
+        var elements = document.getElementsByClassName(className);
         for (let element of elements) {
             element.oninput = (e) => {
                 e.preventDefault();
@@ -153,8 +153,8 @@ function includes(jsonPointer, statesToIgnore) {
     }
     return false;
 }
-function runFunc(state, callback) {
-    callback(state);
+function runFunc(state, callback, props) {
+    callback(state, props);
 }
 
 function loadFile(path, state, props) {
