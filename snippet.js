@@ -204,7 +204,7 @@ function replaceHash(text, hashValue) {
     var index = text.indexOf("#");
     while (index != -1) {
         var prevChar = text[index - 1];
-        if (prevChar == "\"") {
+        if (prevChar == "\"" || prevChar == "\'" || prevChar == "`") {
             text = text.substring(0, index) + hashValue + text.substring(index + 1);
         }
         index = text.indexOf("#", index);
