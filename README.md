@@ -25,21 +25,28 @@ in your javascript file which you linked above, add this code to make a renderFu
 
 ```js
 renderFuncs = {
-	testComponent: (state) => {
-		addEvent('click', 'toggle', state, (state) => {
-			state.toggle = !state.toggle;
-			state.title = state.toggle ? 'Hello World!' : 'Hello Snippets';
-		});
-		return `
-       <h1>${state.title}</h1>
-       <h2>${state.subTitle}</h2>
-       <button id = "toggle">Toggle</button>
-   `;
+	testComponent: (state, props) => {
+		return loadFile('./toggle.snip', state, props);
 	},
 };
 ```
 
-this defines the function called to render our testComponent, the string returned will be the innerHTML of the parent div with the class of snippet, the name has to be the same as what was passed in the data-renderFunc
+this defines the function called to render our testComponent, it will load the file with the filepath in the first argument which we will define next. the innerHTML of the parent div with the class of snippet will have the contents of the file, the name has to be the same as what was passed in the data-renderFunc
+
+now we will define the .snip file
+
+```jsx
+addEvent('click', 'toggle', state, (state) => {
+    state.toggle = !state.toggle;
+    state.title = state.toggle ? 'Hello World!' : 'Hello Snippets';
+});
+!divide!
+<h1>${state.title}</h1>
+<h2>${state.subTitle}</h2>
+<button id = "toggle">Toggle</button>
+```
+
+above the !divide! line, is the javascript that will run first, below is the HTML template that will define the UI. If you want to have your javascript on below the HTML, use !divideDown! instead.
 
 the addEvent function is used addEvent(eventName, id, state, callback(state))
 
@@ -62,34 +69,48 @@ A more complicated example of a contact manager (without saving between sessions
 First, add this code to your renderFuncs JSON Object
 
 ```js
-"contactListComponent": (state) => {
-       addEvent('click', 'addContact', state, (state) => {
-           state.contacts.push({
-               name: document.getElementById("name").value,
-               email: document.getElementById("email").value
-           });
-       });
-       addEvent('click', 'removeContact', state, (state) => {
-           state.contacts.pop();
-       });
-       return `
-       <h1>Contact List</h1>
-       <input id = "name" placeholder = "Name" />
-       <input id = "email" placeholder = "Email" /><br/>
-       <button id = "addContact">Add Contact</button>
-       <button id = "removeContact">Remove Contact</button>
-       <ul>
-           ${iterateState(state.contacts, (contact) => {
-           return `
-               <li>
-                   <h2>${contact.name}</h2>
-                   <h3>${contact.email}</h3>
-               </li>
-               `;
-       })}
-       </ul>
-   `;
-   }
+"contactListComponent": (state, props) => {
+    return loadFile("contactList.snip", state, props);
+},
+"contactComponent": (state, props) => {
+    return loadFile("contact.snip", state, props);
+}
+```
+
+in contactList.snip
+
+```jsx
+addEvent('click', 'addContact', state, (state) => {
+    state.contacts.push({
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value
+    });
+});
+addEvent('click', 'removeContact', state, (state) => {
+    state.contacts.pop();
+});
+!divide!
+<h1>Contact List</h1>
+<input id = "name" placeholder = "Name" />
+<input id = "email" placeholder = "Email" /><br/>
+<button id = "addContact">Add Contact</button>
+<button id = "removeContact">Remove Contact</button>
+<ul>
+    ${iterateState(state.contacts, (contact, index) => {
+        var props_ = {contact:contact}
+        return ${renderFuncs["contactComponent"](state, props_))};
+})}
+</ul>
+
+```
+
+and in contact.snip
+
+```jsx
+<li>
+	<h2>${props.contact.name}</h2>
+	<h3>${props.contact.email}</h3>
+</li>
 ```
 
 This uses the same techniques for events and adding HTML but it uses the iterateState function which takes an array for its first argument and a function for the second. It will loop over every element in that array and pass that element as an argument for the function. What string the function returns each time the function is called is added to the document.
@@ -123,16 +144,6 @@ addClassEvent(event, class, state, props, callback(state, props, element));
 ```
 
 functions. The addClassEvent function will add the listener to an entire class
-
-you can create a .snip file where you can put the return value of a renderFunc and
-
-```js
-return loadFile(filepath, state, props);
-```
-
-everything else should be the same. <br>
-
-you can now add javascript to .snip files in a dedicated section if you want. You can add !divide! to your snip. Anything above is javascript and anything below is HTML Template like before. This is optional, if you don't have !divide!, it will all be treated like HTML. If you prefer your javascript on the bottom, use !divideDown! instead
 
 _note: data-attributes are no longer the best way to add events to dynamically generated lists of elements._
 _note:The # operator only works in .snip files, they are the best way to make snips anyway_
