@@ -138,3 +138,9 @@ _note: data-attributes are no longer the best way to add events to dynamically g
 _note:The # operator only works in .snip files, they are the best way to make snips anyway_
 instead, use the # operator (hash operator). when assigning an id to an element, put a # in front of whatever id you chose. Inside of that same .snip file, it has to be the same file, you can use the addEvent function and put that same id with the hash and it will only detect events for that one html element in that specific snip even if you create several of that same type of snip.
 behind the scenes, it replaces the # with a random 10 digit string so it should be unique every time.
+
+```jsx
+addEvent('click', '#dynamic-button', props, state, callback);
+
+<button id="#dynamic-button">Click Me</button>;
+```
